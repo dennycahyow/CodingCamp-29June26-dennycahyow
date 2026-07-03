@@ -384,7 +384,7 @@ const PomodoroTimer = {
 	 * Reset the timer to configured duration
 	 */
 	reset() {
-		console.log("reset clicked!");
+		console.log("reset clicked!!!!");
 		// Stop the timer if running
 		this.stop();
 
