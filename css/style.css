@@ -111,6 +111,8 @@ body {
 	font-weight: 600;
 	color: var(--color-text-primary);
 	margin-bottom: var(--spacing-md);
+	text-align: center;
+	width: 100%;
 }
 
 /* ===== Theme Toggle ===== */
@@ -160,7 +162,7 @@ body {
 	min-height: 36px;
 }
 
-.btn:hover {
+.btn:not(:disabled):hover {
 	transform: translateY(-1px);
 }
 
@@ -173,12 +175,22 @@ body {
 	outline-offset: 2px;
 }
 
+.btn:disabled {
+	opacity: 0.5;
+	cursor: not-allowed;
+	transform: none;
+}
+
+/* .btn:disabled:hover {
+	transform: none;
+} */
+
 .btn-primary {
 	background-color: var(--color-accent);
 	color: #ffffff;
 }
 
-.btn-primary:hover {
+.btn-primary:not(:disabled):hover {
 	background-color: var(--color-accent-hover);
 }
 
@@ -188,7 +200,7 @@ body {
 	border: 1px solid var(--color-border);
 }
 
-.btn-secondary:hover {
+.btn-secondary:not(:disabled):hover {
 	background-color: var(--color-bg-secondary);
 	border-color: var(--color-accent);
 }
@@ -204,7 +216,7 @@ body {
 	color: #ffffff;
 }
 
-.btn-danger:hover {
+.btn-danger:not(:disabled):hover {
 	background-color: #c82333;
 }
 
@@ -242,6 +254,13 @@ body {
 
 .form-input--small {
 	max-width: 120px;
+}
+
+.form-help-text {
+	font-size: var(--font-size-sm);
+	color: var(--color-text-secondary);
+	margin-top: var(--spacing-xs);
+	font-style: italic;
 }
 
 .input-group {

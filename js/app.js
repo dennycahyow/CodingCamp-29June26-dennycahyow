@@ -173,6 +173,9 @@ const PomodoroTimer = {
 		// Render initial display
 		this.render();
 
+		// Set initial button states
+		this.updateButtonStates();
+
 		// Attach event listeners
 		this.attachEventListeners();
 	},
@@ -184,8 +187,7 @@ const PomodoroTimer = {
 		const startBtn = document.getElementById("timer-start");
 		const stopBtn = document.getElementById("timer-stop");
 		const resetBtn = document.getElementById("timer-reset");
-		const durationSaveBtn = document.getElementById("timer-duration-save");
-		const durationInput = document.getElementById("timer-duration-input");
+		const settingsBtn = document.getElementById("timer-settings-btn");
 
 		if (startBtn) {
 			startBtn.addEventListener("click", () => this.start());
@@ -199,24 +201,120 @@ const PomodoroTimer = {
 			resetBtn.addEventListener("click", () => this.reset());
 		}
 
-		if (durationSaveBtn) {
-			durationSaveBtn.addEventListener("click", () => {
-				const input = document.getElementById("timer-duration-input");
-				if (input) {
-					const minutes = parseInt(input.value, 10);
-					this.setDuration(minutes);
+		if (settingsBtn) {
+			settingsBtn.addEventListener("click", () => this.openSettingsModal());
+		}
+
+		// Modal controls
+		this.attachModalListeners();
+	},
+
+	/**
+	 * Attach modal event listeners
+	 */
+	attachModalListeners() {
+		const modal = document.getElementById("timer-settings-modal");
+		const modalOverlay = document.getElementById("timer-modal-overlay");
+		const modalClose = document.getElementById("timer-modal-close");
+		const modalCancel = document.getElementById("timer-modal-cancel");
+		const durationSaveBtn = document.getElementById("timer-duration-save");
+		const durationInput = document.getElementById("timer-duration-input");
+
+		// Close modal handlers
+		const closeModal = () => {
+			this.closeSettingsModal();
+		};
+
+		if (modalClose) {
+			modalClose.addEventListener("click", closeModal);
+		}
+
+		if (modalCancel) {
+			modalCancel.addEventListener("click", closeModal);
+		}
+
+		if (modalOverlay) {
+			modalOverlay.addEventListener("click", closeModal);
+		}
+
+		// Save duration handler
+		const saveDuration = () => {
+			const input = document.getElementById("timer-duration-input");
+			if (input) {
+				const minutes = parseInt(input.value, 10);
+				const success = this.setDuration(minutes);
+				if (success) {
+					this.closeSettingsModal();
 				}
-			});
+			}
+		};
+
+		if (durationSaveBtn) {
+			durationSaveBtn.addEventListener("click", saveDuration);
 		}
 
 		// Allow Enter key to save duration
 		if (durationInput) {
 			durationInput.addEventListener("keypress", (e) => {
 				if (e.key === "Enter") {
-					const minutes = parseInt(e.target.value, 10);
-					this.setDuration(minutes);
+					saveDuration();
 				}
 			});
+		}
+
+		// Allow Escape key to close modal
+		document.addEventListener("keydown", (e) => {
+			if (e.key === "Escape") {
+				const modal = document.getElementById("timer-settings-modal");
+				if (modal && !modal.classList.contains("hidden")) {
+					closeModal();
+				}
+			}
+		});
+	},
+
+	/**
+	 * Open timer settings modal
+	 */
+	openSettingsModal() {
+		const modal = document.getElementById("timer-settings-modal");
+		const durationInput = document.getElementById("timer-duration-input");
+		const errorEl = document.getElementById("timer-duration-error");
+
+		if (modal) {
+			modal.classList.remove("hidden");
+
+			// Pre-fill with current duration (in minutes)
+			if (durationInput) {
+				durationInput.value = Math.floor(this.state.duration / 60);
+				// Focus the input
+				setTimeout(() => {
+					durationInput.focus();
+					durationInput.select();
+				}, 50);
+			}
+
+			// Clear any previous error
+			if (errorEl) {
+				errorEl.textContent = "";
+			}
+		}
+	},
+
+	/**
+	 * Close timer settings modal
+	 */
+	closeSettingsModal() {
+		const modal = document.getElementById("timer-settings-modal");
+		const errorEl = document.getElementById("timer-duration-error");
+
+		if (modal) {
+			modal.classList.add("hidden");
+		}
+
+		// Clear error message
+		if (errorEl) {
+			errorEl.textContent = "";
 		}
 	},
 
@@ -241,6 +339,7 @@ const PomodoroTimer = {
 			this.tick();
 		}, 1000);
 
+		this.updateButtonStates();
 		this.render();
 	},
 
@@ -261,7 +360,24 @@ const PomodoroTimer = {
 			this.state.intervalId = null;
 		}
 
+		this.updateButtonStates();
 		this.render();
+	},
+
+	/**
+	 * Sync Start/Stop button enabled states to match isRunning
+	 */
+	updateButtonStates() {
+		const startBtn = document.getElementById("timer-start");
+		const stopBtn = document.getElementById("timer-stop");
+
+		if (startBtn) {
+			startBtn.disabled = this.state.isRunning;
+		}
+
+		if (stopBtn) {
+			stopBtn.disabled = !this.state.isRunning;
+		}
 	},
 
 	/**

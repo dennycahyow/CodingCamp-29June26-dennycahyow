@@ -141,44 +141,94 @@
 					<button id="timer-start" type="button" class="btn btn-primary">
 						Start
 					</button>
-					<button id="timer-stop" type="button" class="btn btn-secondary">
+					<button
+						id="timer-stop"
+						type="button"
+						class="btn btn-secondary"
+						disabled
+					>
 						Stop
 					</button>
 					<button id="timer-reset" type="button" class="btn btn-secondary">
 						Reset
 					</button>
-				</div>
-
-				<div class="timer-duration-form">
-					<label for="timer-duration-input" class="form-label"
-						>Duration (minutes)</label
+					<button
+						id="timer-settings-btn"
+						type="button"
+						class="btn btn-secondary"
+						aria-label="Timer settings"
+						title="Change duration"
 					>
-					<div class="input-group">
+						⏱️ Set Duration
+					</button>
+				</div>
+			</section>
+
+			<!-- Timer Duration Modal -->
+			<div
+				id="timer-settings-modal"
+				class="modal hidden"
+				role="dialog"
+				aria-labelledby="timer-modal-title"
+				aria-modal="true"
+			>
+				<div class="modal-overlay" id="timer-modal-overlay"></div>
+				<div class="modal-content">
+					<div class="modal-header">
+						<h3 id="timer-modal-title" class="modal-title">Timer Settings</h3>
+						<button
+							id="timer-modal-close"
+							type="button"
+							class="btn-close"
+							aria-label="Close"
+						>
+							×
+						</button>
+					</div>
+					<div class="modal-body">
+						<label for="timer-duration-input" class="form-label"
+							>Duration (minutes)</label
+						>
 						<input
 							id="timer-duration-input"
 							type="number"
-							class="form-input form-input--small"
+							class="form-input"
 							min="1"
 							max="120"
 							value="25"
 							aria-describedby="timer-duration-error"
 						/>
+						<p class="form-help-text">
+							Set timer duration between 1 and 120 minutes
+						</p>
+						<p class="form-help-text">
+							Default Pomodoro duration: 25 minutes
+						</p>
+						<p
+							id="timer-duration-error"
+							class="error-message"
+							role="alert"
+							aria-live="assertive"
+						></p>
+					</div>
+					<div class="modal-footer">
 						<button
-							id="timer-duration-save"
+							id="timer-modal-cancel"
 							type="button"
 							class="btn btn-secondary"
 						>
-							Set
+							Cancel
+						</button>
+						<button
+							id="timer-duration-save"
+							type="button"
+							class="btn btn-primary"
+						>
+							Save
 						</button>
 					</div>
-					<p
-						id="timer-duration-error"
-						class="error-message"
-						role="alert"
-						aria-live="assertive"
-					></p>
 				</div>
-			</section>
+			</div>
 
 			<!-- ===== Task Manager Section ===== -->
 			<section
