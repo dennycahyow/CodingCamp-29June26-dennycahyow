@@ -1,0 +1,304 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta
+			name="description"
+			content="To-Do List Life Dashboard — a productivity dashboard with task management, Pomodoro timer, quick links, and theme customization."
+		/>
+		<title>Life Dashboard</title>
+		<link rel="stylesheet" href="css/style.css" />
+	</head>
+	<body>
+		<!-- Theme toggle button placed early so it applies before content renders -->
+		<header class="site-header">
+			<h1 class="site-title">Life Dashboard</h1>
+			<button
+				id="theme-toggle"
+				class="theme-toggle-btn"
+				type="button"
+				aria-label="Toggle dark mode"
+				aria-pressed="false"
+			>
+				<span class="theme-toggle-icon" aria-hidden="true">🌙</span>
+				<!-- <span class="theme-toggle-label">Dark Mode</span> -->
+			</button>
+		</header>
+
+		<main class="dashboard-main">
+			<!-- ===== Greeting Section ===== -->
+			<section
+				id="greeting-section"
+				class="dashboard-section"
+				aria-labelledby="greeting-heading"
+			>
+				<h2 id="greeting-heading" class="section-heading visually-hidden">
+					Greeting
+				</h2>
+
+				<div class="greeting-display">
+					<p id="time-display" class="time-display" aria-live="off">00:00:00</p>
+					<p id="date-display" class="date-display" aria-live="off">
+						Monday, January 1, 2026
+					</p>
+					<div class="greeting-content">
+						<p id="greeting-text" class="greeting-text" aria-live="polite">
+							Good Morning!
+						</p>
+						<button
+							id="edit-name-btn"
+							type="button"
+							class="btn-icon"
+							aria-label="Edit name"
+							title="Edit name"
+						>
+							✏️
+						</button>
+					</div>
+				</div>
+			</section>
+
+			<!-- Name Edit Modal (hidden by default) -->
+			<div
+				id="name-edit-modal"
+				class="modal hidden"
+				role="dialog"
+				aria-labelledby="modal-title"
+				aria-modal="true"
+			>
+				<div class="modal-overlay" id="modal-overlay"></div>
+				<div class="modal-content">
+					<div class="modal-header">
+						<h3 id="modal-title" class="modal-title">Edit Your Name</h3>
+						<button
+							id="modal-close"
+							type="button"
+							class="btn-close"
+							aria-label="Close"
+						>
+							×
+						</button>
+					</div>
+					<div class="modal-body">
+						<label for="custom-name-input" class="form-label">Your name</label>
+						<input
+							id="custom-name-input"
+							type="text"
+							class="form-input"
+							placeholder="Enter your name"
+							maxlength="50"
+							autocomplete="off"
+							aria-describedby="custom-name-error"
+						/>
+						<p
+							id="custom-name-error"
+							class="error-message"
+							role="alert"
+							aria-live="assertive"
+						></p>
+					</div>
+					<div class="modal-footer">
+						<button id="modal-cancel" type="button" class="btn btn-secondary">
+							Cancel
+						</button>
+						<button id="custom-name-save" type="button" class="btn btn-primary">
+							Save
+						</button>
+					</div>
+				</div>
+			</div>
+
+			<!-- ===== Pomodoro Timer Section ===== -->
+			<section
+				id="timer-section"
+				class="dashboard-section"
+				aria-labelledby="timer-heading"
+			>
+				<h2 id="timer-heading" class="section-heading">Pomodoro Timer</h2>
+
+				<div class="timer-display-wrapper">
+					<p
+						id="timer-display"
+						class="timer-display"
+						role="timer"
+						aria-label="Pomodoro timer"
+						aria-live="off"
+					>
+						25:00
+					</p>
+					<p
+						id="timer-completion"
+						class="timer-completion hidden"
+						role="status"
+						aria-live="polite"
+					>
+						✅ Time's up! Great focus session!
+					</p>
+				</div>
+
+				<div class="timer-controls" role="group" aria-label="Timer controls">
+					<button id="timer-start" type="button" class="btn btn-primary">
+						Start
+					</button>
+					<button id="timer-stop" type="button" class="btn btn-secondary">
+						Stop
+					</button>
+					<button id="timer-reset" type="button" class="btn btn-secondary">
+						Reset
+					</button>
+				</div>
+
+				<div class="timer-duration-form">
+					<label for="timer-duration-input" class="form-label"
+						>Duration (minutes)</label
+					>
+					<div class="input-group">
+						<input
+							id="timer-duration-input"
+							type="number"
+							class="form-input form-input--small"
+							min="1"
+							max="120"
+							value="25"
+							aria-describedby="timer-duration-error"
+						/>
+						<button
+							id="timer-duration-save"
+							type="button"
+							class="btn btn-secondary"
+						>
+							Set
+						</button>
+					</div>
+					<p
+						id="timer-duration-error"
+						class="error-message"
+						role="alert"
+						aria-live="assertive"
+					></p>
+				</div>
+			</section>
+
+			<!-- ===== Task Manager Section ===== -->
+			<section
+				id="tasks-section"
+				class="dashboard-section"
+				aria-labelledby="tasks-heading"
+			>
+				<h2 id="tasks-heading" class="section-heading">Tasks</h2>
+
+				<div class="task-add-form">
+					<label for="task-input" class="form-label">Add a new task</label>
+					<div class="input-group">
+						<input
+							id="task-input"
+							type="text"
+							class="form-input"
+							placeholder="Enter task description"
+							maxlength="500"
+							autocomplete="off"
+							aria-describedby="task-input-error"
+						/>
+						<button id="task-add-btn" type="button" class="btn btn-primary">
+							Add
+						</button>
+					</div>
+					<p
+						id="task-input-error"
+						class="error-message"
+						role="alert"
+						aria-live="assertive"
+					></p>
+				</div>
+
+				<ul
+					id="task-list"
+					class="task-list"
+					role="list"
+					aria-label="Task list"
+					aria-live="polite"
+				>
+					<!-- Tasks rendered dynamically by TaskManager -->
+				</ul>
+
+				<p id="task-list-empty" class="empty-state" aria-live="polite">
+					No tasks yet. Add one above!
+				</p>
+			</section>
+
+			<!-- ===== Quick Links Section ===== -->
+			<section
+				id="links-section"
+				class="dashboard-section"
+				aria-labelledby="links-heading"
+			>
+				<h2 id="links-heading" class="section-heading">Quick Links</h2>
+
+				<div class="links-add-form">
+					<div class="form-row">
+						<div class="form-field">
+							<label for="link-title-input" class="form-label">Title</label>
+							<input
+								id="link-title-input"
+								type="text"
+								class="form-input"
+								placeholder="e.g. Google"
+								maxlength="100"
+								autocomplete="off"
+								aria-describedby="link-form-error"
+							/>
+						</div>
+						<div class="form-field">
+							<label for="link-url-input" class="form-label">URL</label>
+							<input
+								id="link-url-input"
+								type="url"
+								class="form-input"
+								placeholder="https://example.com"
+								maxlength="2000"
+								autocomplete="off"
+								aria-describedby="link-form-error"
+							/>
+						</div>
+					</div>
+					<div class="input-group">
+						<button id="link-add-btn" type="button" class="btn btn-primary">
+							Add Link
+						</button>
+					</div>
+					<p
+						id="link-form-error"
+						class="error-message"
+						role="alert"
+						aria-live="assertive"
+					></p>
+				</div>
+
+				<div
+					id="links-list"
+					class="links-list"
+					role="list"
+					aria-label="Quick links"
+				>
+					<!-- Links rendered dynamically by QuickLinksManager -->
+				</div>
+
+				<p id="links-list-empty" class="empty-state" aria-live="polite">
+					No quick links yet. Add one above!
+				</p>
+			</section>
+		</main>
+
+		<!-- Global notification area for non-blocking messages (e.g., storage warnings) -->
+		<div
+			id="notification-area"
+			class="notification-area hidden"
+			role="status"
+			aria-live="polite"
+			aria-atomic="true"
+		></div>
+
+		<script type="module" src="js/app.js"></script>
+	</body>
+</html>

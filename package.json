@@ -1,0 +1,16 @@
+{
+	"name": "to-do-list-life-dashboard",
+	"version": "1.0.0",
+	"description": "A productivity-focused web dashboard with tasks, Pomodoro timer, and quick links",
+	"type": "module",
+	"scripts": {
+		"test": "vitest run",
+		"test:watch": "vitest"
+	},
+	"devDependencies": {
+		"fast-check": "3.22.0",
+		"vitest": "2.1.9",
+		"jsdom": "25.0.1",
+		"@vitest/coverage-v8": "2.1.9"
+	}
+}
